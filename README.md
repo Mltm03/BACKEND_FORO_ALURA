@@ -1,54 +1,64 @@
-Este proyecto es una API RESTful construida con Spring Boot que gestiona un foro de discusión. Permite registrar, listar, actualizar y desactivar (soft delete) temas de conversación (topics), así como asociarlos con usuarios y cursos.
+# API RESTful de Foro de Discusión con Spring Boot
 
-🚀 Características principales:
-CRUD de Topics con:
+Este proyecto es una **API RESTful** construida con **Spring Boot** para gestionar un foro de discusión. Permite registrar, listar, actualizar y desactivar temas de conversación (topics), asociándolos con usuarios y cursos.
 
-Validaciones personalizadas (título y mensaje únicos).
+---
 
-Asociación con entidades User y Course a través de sus IDs.
+## 🚀 Características principales
 
-Conversión entre entidades y DTOs (DataNewTopic, DataFromTopic, ListAllTopic, etc.).
+- **CRUD completo de Topics** con:
+  - Validaciones personalizadas para asegurar que el título y mensaje sean únicos.
+  - Asociación con entidades `User` y `Course` mediante sus IDs.
+- Conversión eficiente entre entidades y DTOs (como `DataNewTopic`, `DataFromTopic`, `ListAllTopic`, etc.).
+- Paginación de resultados mediante `Pageable` para consultas eficientes.
+- **Soft delete**: los temas no se eliminan físicamente, sino que se marcan como inactivos.
+- Manejo centralizado de errores usando `@RestControllerAdvice` para excepciones comunes como:
+  - `IllegalArgumentException`
+  - `EntityNotFoundException`
 
-Paginación de resultados usando Pageable.
+---
 
-Soft delete: los temas no se eliminan físicamente, solo se marcan como inactivos.
+## 🏗️ Arquitectura y buenas prácticas
 
-Manejo de errores centralizado con @RestControllerAdvice para excepciones comunes como:
+- Estructura en capas:
+  - **Controller**: manejo de peticiones HTTP.
+  - **Service**: lógica de negocio.
+  - **Repository**: acceso a datos con Spring Data JPA.
+- Inyección de dependencias con `@Autowired`.
+- Uso de `@Transactional` en métodos que modifican datos para asegurar consistencia.
+- Validaciones con **Jakarta Bean Validation** (`@Valid`).
 
-IllegalArgumentException
+---
 
-EntityNotFoundException
+## 📦 Tecnologías utilizadas
 
-Buenas prácticas de arquitectura:
+- Java 17+
+- Spring Boot
+- Spring Data JPA y Hibernate
+- Jakarta Bean Validation
+- PostgreSQL (o cualquier base compatible con JPA)
+- Lombok (opcional)
+- Maven o Gradle
 
-Separación por capas (Controller, Service, Repository).
+---
 
-Inyección de dependencias con @Autowired.
+## 📌 Endpoints principales
 
-Transacciones con @Transactional en los métodos de modificación de datos.
+| Método | Ruta            | Descripción                                |
+| ------ | --------------- | ------------------------------------------|
+| POST   | `/topics`       | Crear un nuevo topic con validación       |
+| GET    | `/topics`       | Listar topics paginados (ej: `?page=0&size=5`) |
+| PUT    | `/topics/{id}`  | Actualizar título y mensaje de un topic   |
+| DELETE | `/topics/{id}`  | Soft delete: marcar topic como inactivo   |
 
-📦 Tecnologías utilizadas:
-Java 17+
+---
 
-Spring Boot
+## Cómo ejecutar
 
-Spring Data JPA
+1. Configura la conexión a la base de datos en `application.properties` o `application.yml`.
+2. Ejecuta la aplicación con tu IDE o con:
 
-Hibernate
-
-Validación con Jakarta Bean Validation (@Valid)
-
-PostgreSQL (o cualquier base de datos compatible con JPA)
-
-Lombok (opcional)
-
-Maven o Gradle
-
-📌 Ejemplo de endpoints:
-POST /topics – Crear un nuevo topic con validación
-
-GET /topics?page=0&size=5 – Listar topics paginados
-
-PUT /topics/{id} – Actualizar título y mensaje
-
-DELETE /topics/{id} – Soft delete (marcar como inactivo)
+   ```bash
+   ./mvnw spring-boot:run
+   # o si usas Gradle
+   ./gradlew bootRun
